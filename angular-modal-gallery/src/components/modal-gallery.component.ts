@@ -64,14 +64,21 @@ export class Image {
   img: string;
   thumb?: string | null | undefined;
   description?: string | null | undefined;
+  caption?: string | null | undefined;
   extUrl?: string | null | undefined;
+  thumbWidth: string | null | undefined;
+  thumbHeight: string | null | undefined;
 
   constructor(img: string, thumb?: string | null | undefined,
-              description?: string | null | undefined, extUrl?: string | null | undefined) {
+              description?: string | null | undefined, caption?: string | null | undefined, extUrl?: string | null | undefined,
+              thumbWidth?: string | null | undefined, thumbHeight?: string | null | undefined) {
     this.img = img;
     this.thumb = thumb;
     this.description = description;
+    this.caption = caption;
     this.extUrl = extUrl;
+    this.thumbWidth = thumbWidth;
+    this.thumbHeight = thumbHeight;
   }
 }
 

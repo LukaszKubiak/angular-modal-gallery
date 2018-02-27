@@ -1,10 +1,11 @@
 <div class="ng-gallery" *ngIf="showGallery">
-  <div *ngFor="let i of images; let index = index">
+  <div class="img" *ngFor="let i of images; let index = index">
     <ng-container *ngIf="i && i.img">
       <img *ngIf="i.thumb" src="{{ i.thumb }}" class="ng-thumb" (click)="showModalGallery(index)"
-           alt="{{getAltDescriptionByIndex(index)}}"/>
+           alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}"/>
       <img *ngIf="!i.thumb" src="{{ i.img }}" class="ng-thumb" (click)="showModalGallery(index)"
-           alt="{{getAltDescriptionByIndex(index)}}"/>
+           alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}"/>
+      <p [ngStyle]="{'width': i.thumbWidth}">{{i.caption}}</p>
     </ng-container>
   </div>
 </div>
