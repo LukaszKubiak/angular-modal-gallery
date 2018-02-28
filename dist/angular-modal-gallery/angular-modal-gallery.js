@@ -1889,7 +1889,7 @@ AngularModalGalleryComponent.decorators = [
              [hidden]="isLastImage"
              (click)="nextImage()"><i class="fa fa-angle-right"></i>
           </a>
-          <span class="info-text">{{getDescriptionToDisplay()}}</span>
+          <span class="info-text" [innerHtml]="getDescriptionToDisplay()"></span>
       </div>
     </div>
   `
