@@ -2486,7 +2486,7 @@ GalleryComponent.decorators = [
                alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}" crossorigin="use-credentials"/>
           <img *ngIf="!i.thumb" src="{{ i.img }}" class="ng-thumb" (click)="showModalGallery(index)"
                alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}"/>
-          <small [ngStyle]="{'width': i.thumbWidth, 'height': '100px'}" [innerHTML]="i.caption"></small>
+          <div class="small" [ngStyle]="{'width': i.thumbWidth, 'height': '100px', 'float': 'left', 'clear': 'both'}" [innerHTML]="i.caption"></div>
         </ng-container>
       </div>
     </div>
