@@ -2483,10 +2483,10 @@ GalleryComponent.decorators = [
       <div class="img" *ngFor="let i of images; let index = index">
         <ng-container *ngIf="i && i.img">
           <img *ngIf="i.thumb" src="{{ i.thumb }}" class="ng-thumb" (click)="showModalGallery(index)"
-               alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}"/>
+               alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}" crossorigin="use-credentials"/>
           <img *ngIf="!i.thumb" src="{{ i.img }}" class="ng-thumb" (click)="showModalGallery(index)"
                alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}"/>
-          <p [ngStyle]="{'width': i.thumbWidth}">{{i.caption}}</p>
+          <small [ngStyle]="{'width': i.thumbWidth, 'height': '100px'}" [innerHTML]="i.caption"></small>
         </ng-container>
       </div>
     </div>
