@@ -2037,7 +2037,6 @@ var GalleryComponent = (function () {
      * @return {?}
      */
     GalleryComponent.prototype.getAltDescriptionByIndex = function (index) {
-        console.info(this.showThumbCaption);
         if (!this.images) {
             return '';
         }

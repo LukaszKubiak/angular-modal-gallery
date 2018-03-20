@@ -2423,7 +2423,6 @@ class GalleryComponent {
      * @return {?}
      */
     getAltDescriptionByIndex(index) {
-        console.info(this.showThumbCaption);
         if (!this.images) {
             return '';
         }

@@ -56,7 +56,6 @@ export class GalleryComponent {
    * @param index Number that represents the image index.
    */
   getAltDescriptionByIndex(index: number) {
-    console.info(this.showThumbCaption);
     if (!this.images) {
       return '';
     }
