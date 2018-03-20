@@ -8,6 +8,7 @@ import { Image } from './modal-gallery.component';
  */
 export declare class GalleryComponent {
     images: Image[];
+    showThumbCaption: boolean;
     showGallery: boolean;
     show: EventEmitter<number>;
     showModalGallery(index: number): void;

@@ -123,6 +123,7 @@ export declare class AngularModalGalleryComponent implements OnInit, OnDestroy, 
      * -----REMOVE THIS IN 4.0.0----- deprecated both showDownloadButton and showExtUrlButton
      */
     showExtUrlButton: boolean;
+    showThumbCaption: boolean;
     close: EventEmitter<ImageModalEvent>;
     show: EventEmitter<ImageModalEvent>;
     firstImage: EventEmitter<ImageModalEvent>;

@@ -190,6 +190,8 @@ export class AngularModalGalleryComponent implements OnInit, OnDestroy, OnChange
    */
   @Input() showExtUrlButton: boolean = false; // deprecated
 
+  @Input() showThumbCaption: boolean = true;
+
   @Output() close: EventEmitter<ImageModalEvent> = new EventEmitter<ImageModalEvent>();
   @Output() show: EventEmitter<ImageModalEvent> = new EventEmitter<ImageModalEvent>();
   @Output() firstImage: EventEmitter<ImageModalEvent> = new EventEmitter<ImageModalEvent>();

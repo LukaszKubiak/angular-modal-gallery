@@ -1239,6 +1239,7 @@ class AngularModalGalleryComponent {
          * -----REMOVE THIS IN 4.0.0----- deprecated both showDownloadButton and showExtUrlButton
          */
         this.showExtUrlButton = false; // deprecated
+        this.showThumbCaption = true;
         this.close = new EventEmitter();
         this.show = new EventEmitter();
         this.firstImage = new EventEmitter();
@@ -1861,7 +1862,7 @@ AngularModalGalleryComponent.decorators = [
         animation: uil-ring-anim 1s linear infinite; }
   `],
                 template: `
-    <gallery [images]="images" [showGallery]="showGallery" (show)="onShowModalGallery($event)"></gallery>
+    <gallery [images]="images" [showGallery]="showGallery" (showThumbCaption)="showThumbCaption" (show)="onShowModalGallery($event)"></gallery>
 
     <div class="ng-overlay" *ngIf="opened">
 
@@ -1912,6 +1913,7 @@ AngularModalGalleryComponent.propDecorators = {
     'slideConfig': [{ type: Input },],
     'showDownloadButton': [{ type: Input },],
     'showExtUrlButton': [{ type: Input },],
+    'showThumbCaption': [{ type: Input },],
     'close': [{ type: Output },],
     'show': [{ type: Output },],
     'firstImage': [{ type: Output },],
@@ -2486,7 +2488,7 @@ GalleryComponent.decorators = [
                alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}" crossorigin="use-credentials"/>
           <img *ngIf="!i.thumb" src="{{ i.img }}" class="ng-thumb" (click)="showModalGallery(index)"
                alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}"/>
-          <div class="small" [ngStyle]="{'width': i.thumbWidth, 'height': '100px', 'float': 'left', 'clear': 'both'}" [innerHTML]="i.caption"></div>
+          <div *ngIf="showThumbCaption" class="small" [ngStyle]="{'width': i.thumbWidth, 'height': '100px', 'float': 'left', 'clear': 'both'}" [innerHTML]="i.caption"></div>
         </ng-container>
       </div>
     </div>
@@ -2499,6 +2501,7 @@ GalleryComponent.decorators = [
 GalleryComponent.ctorParameters = () => [];
 GalleryComponent.propDecorators = {
     'images': [{ type: Input },],
+    'showThumbCaption': [{ type: Input },],
     'showGallery': [{ type: Input },],
     'show': [{ type: Output },],
 };
