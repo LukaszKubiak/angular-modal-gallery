@@ -39,7 +39,7 @@ import { Image } from './modal-gallery.component';
 export class GalleryComponent {
 
   @Input() images: Image[];
-  @Input() showThumbCaption: boolean;
+  @Input() showThumbCaption: boolean = true;
   @Input() showGallery: boolean;
 
   @Output() show: EventEmitter<number> = new EventEmitter<number>();
