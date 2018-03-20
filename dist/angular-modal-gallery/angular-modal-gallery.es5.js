@@ -1198,6 +1198,7 @@ var AngularModalGalleryComponent = (function () {
      * @return {?}
      */
     AngularModalGalleryComponent.prototype.ngOnInit = function () {
+        console.info(this.showThumbCaption);
         // build configButtons to use it inside upper-buttons
         this.configButtons = {
             download: this.showDownloadButton || (this.buttonsConfig && this.buttonsConfig.download),
@@ -2037,6 +2038,7 @@ var GalleryComponent = (function () {
      * @return {?}
      */
     GalleryComponent.prototype.getAltDescriptionByIndex = function (index) {
+        console.info(this.showThumbCaption);
         if (!this.images) {
             return '';
         }

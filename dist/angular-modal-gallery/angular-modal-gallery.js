@@ -1329,6 +1329,7 @@ class AngularModalGalleryComponent {
      * @return {?}
      */
     ngOnInit() {
+        console.info(this.showThumbCaption);
         // build configButtons to use it inside upper-buttons
         this.configButtons = {
             download: this.showDownloadButton || (this.buttonsConfig && this.buttonsConfig.download),
@@ -2423,6 +2424,7 @@ class GalleryComponent {
      * @return {?}
      */
     getAltDescriptionByIndex(index) {
+        console.info(this.showThumbCaption);
         if (!this.images) {
             return '';
         }

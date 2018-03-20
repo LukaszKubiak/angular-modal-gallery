@@ -39,7 +39,7 @@ import { Image } from './modal-gallery.component';
 export class GalleryComponent {
 
   @Input() images: Image[];
-  @Input() showThumbCaption: boolean = true;
+  @Input() showThumbCaption: boolean;
   @Input() showGallery: boolean;
 
   @Output() show: EventEmitter<number> = new EventEmitter<number>();
@@ -56,6 +56,7 @@ export class GalleryComponent {
    * @param index Number that represents the image index.
    */
   getAltDescriptionByIndex(index: number) {
+    console.info(this.showThumbCaption);
     if (!this.images) {
       return '';
     }
