@@ -1329,9 +1329,6 @@ class AngularModalGalleryComponent {
      * @return {?}
      */
     ngOnInit() {
-        console.info(this.showThumbCaption);
-        this.showThumbnailCaption = this.showThumbCaption;
-        console.info(this.showThumbnailCaption);
         // build configButtons to use it inside upper-buttons
         this.configButtons = {
             download: this.showDownloadButton || (this.buttonsConfig && this.buttonsConfig.download),
@@ -1865,7 +1862,7 @@ AngularModalGalleryComponent.decorators = [
         animation: uil-ring-anim 1s linear infinite; }
   `],
                 template: `
-    <gallery [images]="images" [showGallery]="showGallery" (showThumbCaption)="showThumbnailCaption" (show)="onShowModalGallery($event)"></gallery>
+    <gallery [images]="images" [showGallery]="showGallery" [showThumbCaption]="showThumbCaption" (show)="onShowModalGallery($event)"></gallery>
 
     <div class="ng-overlay" *ngIf="opened">
 
