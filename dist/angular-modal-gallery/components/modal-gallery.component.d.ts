@@ -171,6 +171,7 @@ export declare class AngularModalGalleryComponent implements OnInit, OnDestroy, 
      * Boolean that it's true when you are watching the last image (currently visible).
      */
     isLastImage: boolean;
+    showThumbnailCaption: boolean;
     /**
      * Private SWIPE_ACTION to define all swipe actions used by hammerjs.
      */

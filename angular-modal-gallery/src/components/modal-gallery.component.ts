@@ -241,6 +241,8 @@ export class AngularModalGalleryComponent implements OnInit, OnDestroy, OnChange
    */
   isLastImage: boolean = false;
 
+  showThumbnailCaption: boolean;
+
   /**
    * Private SWIPE_ACTION to define all swipe actions used by hammerjs.
    */
@@ -314,6 +316,8 @@ export class AngularModalGalleryComponent implements OnInit, OnDestroy, OnChange
    */
   ngOnInit() {
     console.info(this.showThumbCaption);
+    this.showThumbnailCaption = this.showThumbCaption;
+    console.info(this.showThumbnailCaption);
     // build configButtons to use it inside upper-buttons
     this.configButtons = {
       download: this.showDownloadButton || (this.buttonsConfig && this.buttonsConfig.download),
