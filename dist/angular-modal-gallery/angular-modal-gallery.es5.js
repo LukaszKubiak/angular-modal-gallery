@@ -1144,6 +1144,10 @@ var AngularModalGalleryComponent = (function () {
          */
         this.isLastImage = false;
         /**
+         * Infinite scroll with server side images
+         */
+        this.isServerSide = false;
+        /**
          * Private SWIPE_ACTION to define all swipe actions used by hammerjs.
          */
         this.SWIPE_ACTION = {
@@ -1577,6 +1581,8 @@ AngularModalGalleryComponent.propDecorators = {
     'firstImage': [{ type: Output },],
     'lastImage': [{ type: Output },],
     'hasData': [{ type: Output },],
+    'isServerSide': [{ type: Input },],
+    'getImagesFromServer': [{ type: Input },],
     'onKeyDown': [{ type: HostListener, args: ['window:keydown', ['$event'],] },],
 };
 /*
@@ -2019,6 +2025,10 @@ UpperButtonsComponent.propDecorators = {
  */
 var GalleryComponent = (function () {
     function GalleryComponent() {
+        /**
+         * Infinite scroll with server side images
+         */
+        this.isServerSide = false;
         this.show = new EventEmitter();
     }
     /**
@@ -2026,6 +2036,7 @@ var GalleryComponent = (function () {
      * @return {?}
      */
     GalleryComponent.prototype.showModalGallery = function (index) {
+        this.getImagesFromServer();
         this.show.emit(index);
     };
     /**
@@ -2062,6 +2073,8 @@ GalleryComponent.propDecorators = {
     'images': [{ type: Input },],
     'showThumbCaption': [{ type: Input },],
     'showGallery': [{ type: Input },],
+    'isServerSide': [{ type: Input },],
+    'getImagesFromServer': [{ type: Input },],
     'show': [{ type: Output },],
 };
 /*

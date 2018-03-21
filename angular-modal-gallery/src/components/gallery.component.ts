@@ -41,10 +41,19 @@ export class GalleryComponent {
   @Input() images: Image[];
   @Input() showThumbCaption: boolean;
   @Input() showGallery: boolean;
+  /**
+   * Infinite scroll with server side images
+   */
+  @Input() isServerSide: boolean = false;
+  /**
+   * Function to call at bottom of thumbnails cointainer
+   */
+  @Input() getImagesFromServer: Function;
 
   @Output() show: EventEmitter<number> = new EventEmitter<number>();
 
   showModalGallery(index: number) {
+    this.getImagesFromServer();
     this.show.emit(index);
   }
 

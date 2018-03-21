@@ -240,6 +240,15 @@ export class AngularModalGalleryComponent implements OnInit, OnDestroy, OnChange
    * Boolean that it's true when you are watching the last image (currently visible).
    */
   isLastImage: boolean = false;
+  /**
+   * Infinite scroll with server side images
+   */
+  @Input() isServerSide: boolean = false;
+  /**
+   * Function to call at bottom of thumbnails cointainer
+   */
+  @Input() getImagesFromServer: Function;
+
 
   /**
    * Private SWIPE_ACTION to define all swipe actions used by hammerjs.

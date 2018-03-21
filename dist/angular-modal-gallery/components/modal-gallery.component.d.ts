@@ -172,6 +172,14 @@ export declare class AngularModalGalleryComponent implements OnInit, OnDestroy, 
      */
     isLastImage: boolean;
     /**
+     * Infinite scroll with server side images
+     */
+    isServerSide: boolean;
+    /**
+     * Function to call at bottom of thumbnails cointainer
+     */
+    getImagesFromServer: Function;
+    /**
      * Private SWIPE_ACTION to define all swipe actions used by hammerjs.
      */
     private SWIPE_ACTION;

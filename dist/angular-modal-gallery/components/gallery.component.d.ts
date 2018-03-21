@@ -10,6 +10,14 @@ export declare class GalleryComponent {
     images: Image[];
     showThumbCaption: boolean;
     showGallery: boolean;
+    /**
+     * Infinite scroll with server side images
+     */
+    isServerSide: boolean;
+    /**
+     * Function to call at bottom of thumbnails cointainer
+     */
+    getImagesFromServer: Function;
     show: EventEmitter<number>;
     showModalGallery(index: number): void;
     /**
