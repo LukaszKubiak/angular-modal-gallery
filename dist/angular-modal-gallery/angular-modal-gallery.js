@@ -1884,7 +1884,13 @@ AngularModalGalleryComponent.decorators = [
         animation: uil-ring-anim 1s linear infinite; }
   `],
                 template: `
-    <gallery [images]="images" [showGallery]="showGallery" [showThumbCaption]="showThumbCaption" (show)="onShowModalGallery($event)" (scrolled)="onScrollDown()"></gallery>
+    <gallery
+      [images]="images"
+      [showGallery]="showGallery"
+      [showThumbCaption]="showThumbCaption"
+      (show)="onShowModalGallery($event)"
+      [isServerSide]="isServerSide"
+      (scrolled)="onScrollDown()"></gallery>
 
     <div class="ng-overlay" *ngIf="opened">
 

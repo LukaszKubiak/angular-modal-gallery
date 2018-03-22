@@ -1,4 +1,10 @@
-<gallery [images]="images" [showGallery]="showGallery" [showThumbCaption]="showThumbCaption" (show)="onShowModalGallery($event)" (scrolled)="onScrollDown()"></gallery>
+<gallery
+  [images]="images"
+  [showGallery]="showGallery"
+  [showThumbCaption]="showThumbCaption"
+  (show)="onShowModalGallery($event)"
+  [isServerSide]="isServerSide"
+  (scrolled)="onScrollDown()"></gallery>
 
 <div class="ng-overlay" *ngIf="opened">
 
