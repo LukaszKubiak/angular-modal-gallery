@@ -48,12 +48,11 @@ export class GalleryComponent {
   /**
    * Function to call at bottom of thumbnails cointainer
    */
-  @Input() getImagesFromServer: Function;
+  @Output() scrolled: EventEmitter<any> = new EventEmitter();
 
   @Output() show: EventEmitter<number> = new EventEmitter<number>();
 
   showModalGallery(index: number) {
-    this.getImagesFromServer();
     this.show.emit(index);
   }
 
@@ -72,5 +71,9 @@ export class GalleryComponent {
       return `Image ${index}`;
     }
     return this.images[index].description;
+  }
+
+  onScrollDown(){
+    this.scrolled.emit(null);
   }
 }

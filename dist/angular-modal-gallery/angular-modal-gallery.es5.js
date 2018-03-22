@@ -1,6 +1,14 @@
-import { Component, Directive, ElementRef, EventEmitter, HostListener, Inject, Injectable, InjectionToken, Input, NgModule, Output, Renderer } from '@angular/core';
+import { Component, Directive, ElementRef, EventEmitter, HostListener, Inject, Injectable, InjectionToken, Input, NgModule, NgZone, Output, Renderer } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable as Observable$1 } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/sampleTime';
+import { of as of$2 } from 'rxjs/observable/of';
 function createCommonjsModule(fn, module) {
     return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
@@ -1148,6 +1156,10 @@ var AngularModalGalleryComponent = (function () {
          */
         this.isServerSide = false;
         /**
+         * Function to call at bottom of thumbnails cointainer
+         */
+        this.scrolled = new EventEmitter();
+        /**
          * Private SWIPE_ACTION to define all swipe actions used by hammerjs.
          */
         this.SWIPE_ACTION = {
@@ -1548,6 +1560,12 @@ var AngularModalGalleryComponent = (function () {
         return !!this.slideConfig && this.slideConfig.infinite === false &&
             this.currentImageIndex === boundaryIndex;
     };
+    /**
+     * @return {?}
+     */
+    AngularModalGalleryComponent.prototype.onScrollDown = function () {
+        this.scrolled.emit(null);
+    };
     return AngularModalGalleryComponent;
 }());
 AngularModalGalleryComponent.decorators = [
@@ -1555,7 +1573,7 @@ AngularModalGalleryComponent.decorators = [
                 selector: 'modal-gallery',
                 exportAs: 'modalGallery',
                 styles: ["\n    /*\n     The MIT License (MIT)\n\n     Copyright (c) 2017 Stefano Cappa (Ks89)\n     Copyright (c) 2016 vimalavinisha\n\n     Permission is hereby granted, free of charge, to any person obtaining a copy\n     of this software and associated documentation files (the \"Software\"), to deal\n     in the Software without restriction, including without limitation the rights\n     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n     copies of the Software, and to permit persons to whom the Software is\n     furnished to do so, subject to the following conditions:\n\n     The above copyright notice and this permission notice shall be included in all\n     copies or substantial portions of the Software.\n\n     THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n     FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE\n     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n     SOFTWARE.\n     */\n    .ng-overlay {\n      position: fixed;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      background: rgba(0, 0, 0, 0.8);\n      /*opacity: 0.85;*/\n      z-index: 9999;\n      -webkit-user-select: none;\n      -moz-user-select: none;\n      -ms-user-select: none;\n      user-select: none;\n      -webkit-user-drag: none; }\n\n    .ng-gallery-content {\n      position: fixed;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      z-index: 10000;\n      text-align: center; }\n      .ng-gallery-content > a.nav-left, .ng-gallery-content > a.nav-right {\n        color: #fff !important;\n        text-decoration: none;\n        font-size: 60px;\n        cursor: pointer;\n        outline: none; }\n      .ng-gallery-content > a.nav-left {\n        position: fixed;\n        left: 15px;\n        top: 50%;\n        -webkit-transform: translateY(-50%);\n                transform: translateY(-50%); }\n      .ng-gallery-content > a.nav-right {\n        position: fixed;\n        right: 15px;\n        top: 50%;\n        -webkit-transform: translateY(-50%);\n                transform: translateY(-50%); }\n      .ng-gallery-content > img {\n        height: auto;\n        max-height: calc(100% - 150px);\n        max-width: calc(100% - 100px);\n        position: relative;\n        display: block;\n        margin: 0 auto 0 auto;\n        top: 50%;\n        transform: translateY(-50%);\n        -webkit-transform: translateY(-50%);\n        cursor: pointer;\n        -webkit-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n        -webkit-user-drag: none; }\n      .ng-gallery-content.effect {\n        -webkit-animation: fadeIn 0.5s;\n                animation: fadeIn 0.5s; }\n      .ng-gallery-content > span.info-text {\n        color: #fff;\n        display: inline-block;\n        width: 100%;\n        height: 20px;\n        font-weight: bold;\n        text-align: center;\n        position: fixed;\n        left: 0;\n        right: 0; }\n      @media (max-width: 676px) {\n        .ng-gallery-content > span.info-text {\n          bottom: 100px; } }\n      @media (min-width: 676px) and (max-width: 752px) {\n        .ng-gallery-content > span.info-text {\n          padding-top: 52px; } }\n      @media (min-width: 752px) and (max-width: 804px) {\n        .ng-gallery-content > span.info-text {\n          padding-top: 43px; } }\n      @media (min-width: 804px) {\n        .ng-gallery-content > span.info-text {\n          bottom: 100px; } }\n      .ng-gallery-content > .ng-thumbnails-wrapper {\n        width: 400px;\n        height: 70px;\n        text-align: center;\n        position: fixed;\n        bottom: 20px;\n        left: 0;\n        right: 0;\n        margin-left: auto;\n        margin-right: auto;\n        overflow-x: hidden; }\n        .ng-gallery-content > .ng-thumbnails-wrapper > .ng-thumbnails {\n          width: 4000px;\n          height: 70px; }\n          .ng-gallery-content > .ng-thumbnails-wrapper > .ng-thumbnails > div > img {\n            width: auto;\n            height: 70px;\n            float: left;\n            margin-right: 10px;\n            cursor: pointer;\n            opacity: 0.6; }\n            .ng-gallery-content > .ng-thumbnails-wrapper > .ng-thumbnails > div > img:hover, .ng-gallery-content > .ng-thumbnails-wrapper > .ng-thumbnails > div > img.active {\n              -webkit-transition: opacity 0.25s ease;\n              transition: opacity 0.25s ease;\n              opacity: 1; }\n\n    @-webkit-keyframes fadeIn {\n      from {\n        opacity: 0.3; }\n      to {\n        opacity: 1; } }\n\n    @keyframes fadeIn {\n      from {\n        opacity: 0.3; }\n      to {\n        opacity: 1; } }\n\n    /* Loading - from http://loading.io */\n    uiload {\n      display: inline-block;\n      position: relative; }\n      uiload > div {\n        position: relative; }\n\n    @-webkit-keyframes uil-ring-anim {\n      0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg); }\n      100% {\n        -webkit-transform: rotate(360deg);\n        transform: rotate(360deg); } }\n\n    @keyframes uil-ring-anim {\n      0% {\n        -webkit-transform: rotate(0deg);\n        transform: rotate(0deg); }\n      100% {\n        -webkit-transform: rotate(360deg);\n        transform: rotate(360deg); } }\n\n    .uil-ring-css {\n      background: none;\n      position: relative;\n      top: 0;\n      margin: 180px auto 0 auto;\n      width: 100px;\n      height: 100px; }\n      .uil-ring-css > div {\n        position: absolute;\n        display: block;\n        width: 80px;\n        height: 80px;\n        top: 20px;\n        left: 20px;\n        border-radius: 40px;\n        -webkit-box-shadow: 0 6px 0 0 #fff;\n                box-shadow: 0 6px 0 0 #fff;\n        -webkit-animation: uil-ring-anim 1s linear infinite;\n        animation: uil-ring-anim 1s linear infinite; }\n  "],
-                template: "\n    <gallery [images]=\"images\" [showGallery]=\"showGallery\" [showThumbCaption]=\"showThumbCaption\" (show)=\"onShowModalGallery($event)\" [getImagesFromServer]=\"getImagesFromServer\"></gallery>\n\n    <div class=\"ng-overlay\" *ngIf=\"opened\">\n\n      <div id=\"ng-gallery-content\" class=\"ng-gallery-content\"\n           click-outside [clickOutsideEnable]=\"enableCloseOutside\"\n           (clickOutside)=\"onClickOutside($event)\">\n\n          <div class=\"uil-ring-css\" *ngIf=\"loading\">\n            <div></div>\n          </div>\n\n          <upperButtons [image]=\"currentImage\" [configButtons]=\"configButtons\"\n                        (close)=\"closeGallery()\" (download)=\"downloadImage()\"></upperButtons>\n\n          <a class=\"nav-left\" *ngIf=\"images?.length > 1\"\n             [hidden]=\"isFirstImage\"\n             (click)=\"prevImage()\"><i class=\"fa fa-angle-left\"></i>\n          </a>\n          <img *ngIf=\"!loading\" class=\"effect\" src=\"{{ currentImage.img }}\"\n               alt=\"{{getAltDescriptionByImage(currentImage)}}\"\n               (click)=\"nextImage(clickAction)\"\n               (swipeleft)=\"swipe(currentImageIndex, $event.type)\"\n               (swiperight)=\"swipe(currentImageIndex, $event.type)\"/>\n          <a class=\"nav-right\" *ngIf=\"images?.length > 1\"\n             [hidden]=\"isLastImage\"\n             (click)=\"nextImage()\"><i class=\"fa fa-angle-right\"></i>\n          </a>\n          <span class=\"info-text\" [innerHtml]=\"getDescriptionToDisplay()\"></span>\n      </div>\n    </div>\n  "
+                template: "\n    <gallery [images]=\"images\" [showGallery]=\"showGallery\" [showThumbCaption]=\"showThumbCaption\" (show)=\"onShowModalGallery($event)\" (scrolled)=\"onScrollDown()\"></gallery>\n\n    <div class=\"ng-overlay\" *ngIf=\"opened\">\n\n      <div id=\"ng-gallery-content\" class=\"ng-gallery-content\"\n           click-outside [clickOutsideEnable]=\"enableCloseOutside\"\n           (clickOutside)=\"onClickOutside($event)\">\n\n          <div class=\"uil-ring-css\" *ngIf=\"loading\">\n            <div></div>\n          </div>\n\n          <upperButtons [image]=\"currentImage\" [configButtons]=\"configButtons\"\n                        (close)=\"closeGallery()\" (download)=\"downloadImage()\"></upperButtons>\n\n          <a class=\"nav-left\" *ngIf=\"images?.length > 1\"\n             [hidden]=\"isFirstImage\"\n             (click)=\"prevImage()\"><i class=\"fa fa-angle-left\"></i>\n          </a>\n          <img *ngIf=\"!loading\" class=\"effect\" src=\"{{ currentImage.img }}\"\n               alt=\"{{getAltDescriptionByImage(currentImage)}}\"\n               (click)=\"nextImage(clickAction)\"\n               (swipeleft)=\"swipe(currentImageIndex, $event.type)\"\n               (swiperight)=\"swipe(currentImageIndex, $event.type)\"/>\n          <a class=\"nav-right\" *ngIf=\"images?.length > 1\"\n             [hidden]=\"isLastImage\"\n             (click)=\"nextImage()\"><i class=\"fa fa-angle-right\"></i>\n          </a>\n          <span class=\"info-text\" [innerHtml]=\"getDescriptionToDisplay()\"></span>\n      </div>\n    </div>\n  "
             },] },
 ];
 /**
@@ -1582,7 +1600,7 @@ AngularModalGalleryComponent.propDecorators = {
     'lastImage': [{ type: Output },],
     'hasData': [{ type: Output },],
     'isServerSide': [{ type: Input },],
-    'getImagesFromServer': [{ type: Input },],
+    'scrolled': [{ type: Output },],
     'onKeyDown': [{ type: HostListener, args: ['window:keydown', ['$event'],] },],
 };
 /*
@@ -2029,6 +2047,10 @@ var GalleryComponent = (function () {
          * Infinite scroll with server side images
          */
         this.isServerSide = false;
+        /**
+         * Function to call at bottom of thumbnails cointainer
+         */
+        this.scrolled = new EventEmitter();
         this.show = new EventEmitter();
     }
     /**
@@ -2036,7 +2058,6 @@ var GalleryComponent = (function () {
      * @return {?}
      */
     GalleryComponent.prototype.showModalGallery = function (index) {
-        this.getImagesFromServer();
         this.show.emit(index);
     };
     /**
@@ -2056,13 +2077,19 @@ var GalleryComponent = (function () {
         }
         return this.images[index].description;
     };
+    /**
+     * @return {?}
+     */
+    GalleryComponent.prototype.onScrollDown = function () {
+        this.scrolled.emit(null);
+    };
     return GalleryComponent;
 }());
 GalleryComponent.decorators = [
     { type: Component, args: [{
                 selector: 'gallery',
                 styles: ["\n    /*\n     The MIT License (MIT)\n\n     Copyright (c) 2017 Stefano Cappa (Ks89)\n     Copyright (c) 2016 vimalavinisha\n\n     Permission is hereby granted, free of charge, to any person obtaining a copy\n     of this software and associated documentation files (the \"Software\"), to deal\n     in the Software without restriction, including without limitation the rights\n     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n     copies of the Software, and to permit persons to whom the Software is\n     furnished to do so, subject to the following conditions:\n\n     The above copyright notice and this permission notice shall be included in all\n     copies or substantial portions of the Software.\n\n     THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n     FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE\n     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n     SOFTWARE.\n     */\n    .ng-gallery {\n      width: 100%;\n      display: inline-block; }\n\n    img.ng-thumb {\n      height: 50px;\n      float: left;\n      display: block;\n      cursor: pointer;\n      margin: 2px 2px 0 0; }\n\n    .img {\n      text-align: left;\n      display: block;\n      background-color: transparent;\n      border: 1px solid transparent;\n      margin-right: 10px;\n      margin-bottom: 1px;\n      float: left; }\n  "],
-                template: "\n    <div class=\"ng-gallery\" *ngIf=\"showGallery\">\n      <div class=\"img\" *ngFor=\"let i of images; let index = index\">\n        <ng-container *ngIf=\"i && i.img\">\n          <img *ngIf=\"i.thumb\" src=\"{{ i.thumb }}\" class=\"ng-thumb\" (click)=\"showModalGallery(index)\"\n               alt=\"{{getAltDescriptionByIndex(index)}}\" [ngStyle]=\"{'width': i.thumbWidth, 'height': i.thumbHeight}\" crossorigin=\"use-credentials\"/>\n          <img *ngIf=\"!i.thumb\" src=\"{{ i.img }}\" class=\"ng-thumb\" (click)=\"showModalGallery(index)\"\n               alt=\"{{getAltDescriptionByIndex(index)}}\" [ngStyle]=\"{'width': i.thumbWidth, 'height': i.thumbHeight}\"/>\n          <div *ngIf=\"showThumbCaption\" class=\"small\" [ngStyle]=\"{'width': i.thumbWidth, 'height': '100px', 'float': 'left', 'clear': 'both'}\" [innerHTML]=\"i.caption\"></div>\n        </ng-container>\n      </div>\n    </div>\n  "
+                template: "\n    <div class=\"ng-gallery\" *ngIf=\"showGallery\">\n      <div class=\"img\" *ngFor=\"let i of images; let index = index\">\n        <ng-container *ngIf=\"i && i.img && !isServerSide\">\n          <img *ngIf=\"i.thumb\" src=\"{{ i.thumb }}\" class=\"ng-thumb\" (click)=\"showModalGallery(index)\"\n               alt=\"{{getAltDescriptionByIndex(index)}}\" [ngStyle]=\"{'width': i.thumbWidth, 'height': i.thumbHeight}\" crossorigin=\"use-credentials\"/>\n          <img *ngIf=\"!i.thumb\" src=\"{{ i.img }}\" class=\"ng-thumb\" (click)=\"showModalGallery(index)\"\n               alt=\"{{getAltDescriptionByIndex(index)}}\" [ngStyle]=\"{'width': i.thumbWidth, 'height': i.thumbHeight}\"/>\n          <div *ngIf=\"showThumbCaption\" class=\"small\" [ngStyle]=\"{'width': i.thumbWidth, 'height': '100px', 'float': 'left', 'clear': 'both'}\"\n               [innerHTML]=\"i.caption\"></div>\n        </ng-container>\n        <ng-container *ngIf=\"i && i.img && isServerSide\">\n          <div\n            data-infinite-scroll\n            debounce\n            (scrolled)=\"onScrollDown()\">\n            <img *ngIf=\"i.thumb\" src=\"{{ i.thumb }}\" class=\"ng-thumb\" (click)=\"showModalGallery(index)\"\n                 alt=\"{{getAltDescriptionByIndex(index)}}\" [ngStyle]=\"{'width': i.thumbWidth, 'height': i.thumbHeight}\" crossorigin=\"use-credentials\"/>\n            <img *ngIf=\"!i.thumb\" src=\"{{ i.img }}\" class=\"ng-thumb\" (click)=\"showModalGallery(index)\"\n                 alt=\"{{getAltDescriptionByIndex(index)}}\" [ngStyle]=\"{'width': i.thumbWidth, 'height': i.thumbHeight}\"/>\n            <div *ngIf=\"showThumbCaption\" class=\"small\" [ngStyle]=\"{'width': i.thumbWidth, 'height': '100px', 'float': 'left', 'clear': 'both'}\"\n                 [innerHTML]=\"i.caption\"></div>\n          </div>\n        </ng-container>\n      </div>\n    </div>\n  "
             },] },
 ];
 /**
@@ -2074,9 +2101,589 @@ GalleryComponent.propDecorators = {
     'showThumbCaption': [{ type: Input },],
     'showGallery': [{ type: Input },],
     'isServerSide': [{ type: Input },],
-    'getImagesFromServer': [{ type: Input },],
+    'scrolled': [{ type: Output },],
     'show': [{ type: Output },],
 };
+/**
+ * @param {?} selector
+ * @param {?} scrollWindow
+ * @param {?} defaultElement
+ * @param {?} fromRoot
+ * @return {?}
+ */
+function resolveContainerElement(selector, scrollWindow, defaultElement, fromRoot) {
+    var /** @type {?} */ hasWindow = window && !!window.document && window.document.documentElement;
+    var /** @type {?} */ container = hasWindow && scrollWindow ? window : defaultElement;
+    if (selector) {
+        var /** @type {?} */ containerIsString = selector && hasWindow && typeof selector === 'string';
+        container = containerIsString
+            ? findElement(selector, defaultElement.nativeElement, fromRoot)
+            : selector;
+        if (!container) {
+            throw new Error('ngx-infinite-scroll {resolveContainerElement()}: selector for');
+        }
+    }
+    return container;
+}
+/**
+ * @param {?} selector
+ * @param {?} customRoot
+ * @param {?} fromRoot
+ * @return {?}
+ */
+function findElement(selector, customRoot, fromRoot) {
+    var /** @type {?} */ rootEl = fromRoot ? window.document : customRoot;
+    return rootEl.querySelector(selector);
+}
+/**
+ * @param {?} prop
+ * @return {?}
+ */
+function inputPropChanged(prop) {
+    return prop && !prop.firstChange;
+}
+/**
+ * @return {?}
+ */
+function hasWindowDefined() {
+    return typeof window !== 'undefined';
+}
+var AxisResolver = (function () {
+    /**
+     * @param {?=} vertical
+     */
+    function AxisResolver(vertical) {
+        if (vertical === void 0) {
+            vertical = true;
+        }
+        this.vertical = vertical;
+    }
+    /**
+     * @return {?}
+     */
+    AxisResolver.prototype.clientHeightKey = function () { return this.vertical ? 'clientHeight' : 'clientWidth'; };
+    /**
+     * @return {?}
+     */
+    AxisResolver.prototype.offsetHeightKey = function () { return this.vertical ? 'offsetHeight' : 'offsetWidth'; };
+    /**
+     * @return {?}
+     */
+    AxisResolver.prototype.scrollHeightKey = function () { return this.vertical ? 'scrollHeight' : 'scrollWidth'; };
+    /**
+     * @return {?}
+     */
+    AxisResolver.prototype.pageYOffsetKey = function () { return this.vertical ? 'pageYOffset' : 'pageXOffset'; };
+    /**
+     * @return {?}
+     */
+    AxisResolver.prototype.offsetTopKey = function () { return this.vertical ? 'offsetTop' : 'offsetLeft'; };
+    /**
+     * @return {?}
+     */
+    AxisResolver.prototype.scrollTopKey = function () { return this.vertical ? 'scrollTop' : 'scrollLeft'; };
+    /**
+     * @return {?}
+     */
+    AxisResolver.prototype.topKey = function () { return this.vertical ? 'top' : 'left'; };
+    return AxisResolver;
+}());
+/**
+ * @param {?} alwaysCallback
+ * @param {?} shouldFireScrollEvent
+ * @param {?} isTriggeredCurrentTotal
+ * @return {?}
+ */
+function shouldTriggerEvents(alwaysCallback, shouldFireScrollEvent, isTriggeredCurrentTotal) {
+    return (alwaysCallback || shouldFireScrollEvent) && !isTriggeredCurrentTotal;
+}
+/**
+ * @param {?} __0
+ * @return {?}
+ */
+function createResolver(_a) {
+    var windowElement = _a.windowElement, axis = _a.axis;
+    return createResolverWithContainer({ axis: axis, isWindow: isElementWindow(windowElement) }, windowElement);
+}
+/**
+ * @param {?} resolver
+ * @param {?} windowElement
+ * @return {?}
+ */
+function createResolverWithContainer(resolver, windowElement) {
+    var /** @type {?} */ container = resolver.isWindow || (windowElement && !windowElement.nativeElement)
+        ? windowElement
+        : windowElement.nativeElement;
+    return Object.assign({}, resolver, { container: container });
+}
+/**
+ * @param {?} windowElement
+ * @return {?}
+ */
+function isElementWindow(windowElement) {
+    var /** @type {?} */ isWindow = ['Window', 'global'].some(function (obj) { return Object.prototype.toString.call(windowElement).includes(obj); });
+    return isWindow;
+}
+/**
+ * @param {?} isContainerWindow
+ * @param {?} windowElement
+ * @return {?}
+ */
+function getDocumentElement(isContainerWindow, windowElement) {
+    return isContainerWindow ? windowElement.document.documentElement : null;
+}
+/**
+ * @param {?} element
+ * @param {?} resolver
+ * @return {?}
+ */
+function calculatePoints(element, resolver) {
+    var /** @type {?} */ height = extractHeightForElement(resolver);
+    return resolver.isWindow
+        ? calculatePointsForWindow(height, element, resolver)
+        : calculatePointsForElement(height, element, resolver);
+}
+/**
+ * @param {?} height
+ * @param {?} element
+ * @param {?} resolver
+ * @return {?}
+ */
+function calculatePointsForWindow(height, element, resolver) {
+    var axis = resolver.axis, container = resolver.container, isWindow = resolver.isWindow;
+    var _a = extractHeightPropKeys(axis), offsetHeightKey = _a.offsetHeightKey, clientHeightKey = _a.clientHeightKey;
+    // scrolled until now / current y point
+    var /** @type {?} */ scrolled = height +
+        getElementPageYOffset(getDocumentElement(isWindow, container), axis, isWindow);
+    // total height / most bottom y point
+    var /** @type {?} */ nativeElementHeight = getElementHeight(element.nativeElement, isWindow, offsetHeightKey, clientHeightKey);
+    var /** @type {?} */ totalToScroll = getElementOffsetTop(element.nativeElement, axis, isWindow) +
+        nativeElementHeight;
+    return { height: height, scrolled: scrolled, totalToScroll: totalToScroll };
+}
+/**
+ * @param {?} height
+ * @param {?} element
+ * @param {?} resolver
+ * @return {?}
+ */
+function calculatePointsForElement(height, element, resolver) {
+    var axis = resolver.axis, container = resolver.container;
+    // perhaps use container.offsetTop instead of 'scrollTop'
+    var /** @type {?} */ scrolled = container[axis.scrollTopKey()];
+    var /** @type {?} */ totalToScroll = container[axis.scrollHeightKey()];
+    return { height: height, scrolled: scrolled, totalToScroll: totalToScroll };
+}
+/**
+ * @param {?} axis
+ * @return {?}
+ */
+function extractHeightPropKeys(axis) {
+    return {
+        offsetHeightKey: axis.offsetHeightKey(),
+        clientHeightKey: axis.clientHeightKey()
+    };
+}
+/**
+ * @param {?} __0
+ * @return {?}
+ */
+function extractHeightForElement(_a) {
+    var container = _a.container, isWindow = _a.isWindow, axis = _a.axis;
+    var _b = extractHeightPropKeys(axis), offsetHeightKey = _b.offsetHeightKey, clientHeightKey = _b.clientHeightKey;
+    return getElementHeight(container, isWindow, offsetHeightKey, clientHeightKey);
+}
+/**
+ * @param {?} elem
+ * @param {?} isWindow
+ * @param {?} offsetHeightKey
+ * @param {?} clientHeightKey
+ * @return {?}
+ */
+function getElementHeight(elem, isWindow, offsetHeightKey, clientHeightKey) {
+    if (isNaN(elem[offsetHeightKey])) {
+        return getDocumentElement(isWindow, elem)[clientHeightKey];
+    }
+    else {
+        return elem[offsetHeightKey];
+    }
+}
+/**
+ * @param {?} elem
+ * @param {?} axis
+ * @param {?} isWindow
+ * @return {?}
+ */
+function getElementOffsetTop(elem, axis, isWindow) {
+    var /** @type {?} */ topKey = axis.topKey();
+    // elem = elem.nativeElement;
+    if (!elem.getBoundingClientRect) {
+        // || elem.css('none')) {
+        return;
+    }
+    return (elem.getBoundingClientRect()[topKey] +
+        getElementPageYOffset(elem, axis, isWindow));
+}
+/**
+ * @param {?} elem
+ * @param {?} axis
+ * @param {?} isWindow
+ * @return {?}
+ */
+function getElementPageYOffset(elem, axis, isWindow) {
+    var /** @type {?} */ pageYOffset = axis.pageYOffsetKey();
+    var /** @type {?} */ scrollTop = axis.scrollTopKey();
+    var /** @type {?} */ offsetTop = axis.offsetTopKey();
+    if (isNaN(window[pageYOffset])) {
+        return getDocumentElement(isWindow, elem)[scrollTop];
+    }
+    else if (elem.ownerDocument) {
+        return elem.ownerDocument.defaultView[pageYOffset];
+    }
+    else {
+        return elem[offsetTop];
+    }
+}
+/**
+ * @param {?} container
+ * @param {?} distance
+ * @param {?} scrollingDown
+ * @return {?}
+ */
+function shouldFireScrollEvent(container, distance, scrollingDown) {
+    var /** @type {?} */ remaining;
+    var /** @type {?} */ containerBreakpoint;
+    var /** @type {?} */ scrolledUntilNow = container.height + container.scrolled;
+    if (scrollingDown) {
+        remaining = (container.totalToScroll - scrolledUntilNow) / container.totalToScroll;
+        containerBreakpoint = distance.down / 10;
+    }
+    else {
+        remaining = scrolledUntilNow / container.totalToScroll;
+        containerBreakpoint = distance.up / 10;
+    }
+    var /** @type {?} */ shouldFireEvent = remaining <= containerBreakpoint;
+    return shouldFireEvent;
+}
+/**
+ * @param {?} lastScrollPosition
+ * @param {?} container
+ * @return {?}
+ */
+function isScrollingDownwards(lastScrollPosition, container) {
+    return lastScrollPosition < container.scrolled;
+}
+/**
+ * @param {?} lastScrollPosition
+ * @param {?} container
+ * @param {?} distance
+ * @return {?}
+ */
+function getScrollStats(lastScrollPosition, container, distance) {
+    var /** @type {?} */ scrollDown = isScrollingDownwards(lastScrollPosition, container);
+    return {
+        fire: shouldFireScrollEvent(container, distance, scrollDown),
+        scrollDown: scrollDown
+    };
+}
+/**
+ * @param {?} position
+ * @param {?} scrollState
+ * @return {?}
+ */
+function updateScrollPosition(position, scrollState) {
+    return (scrollState.lastScrollPosition = position);
+}
+/**
+ * @param {?} totalToScroll
+ * @param {?} scrollState
+ * @return {?}
+ */
+function updateTotalToScroll(totalToScroll, scrollState) {
+    if (scrollState.lastTotalToScroll !== totalToScroll) {
+        scrollState.lastTotalToScroll = scrollState.totalToScroll;
+        scrollState.totalToScroll = totalToScroll;
+    }
+}
+/**
+ * @param {?} scrollState
+ * @return {?}
+ */
+/**
+ * @param {?} scroll
+ * @param {?} scrollState
+ * @param {?} triggered
+ * @param {?} isScrollingDown
+ * @return {?}
+ */
+function updateTriggeredFlag(scroll, scrollState, triggered, isScrollingDown) {
+    if (isScrollingDown) {
+        scrollState.triggered.down = scroll;
+    }
+    else {
+        scrollState.triggered.up = scroll;
+    }
+}
+/**
+ * @param {?} totalToScroll
+ * @param {?} scrollState
+ * @param {?} isScrollingDown
+ * @return {?}
+ */
+function isTriggeredScroll(totalToScroll, scrollState, isScrollingDown) {
+    return isScrollingDown
+        ? scrollState.triggered.down === totalToScroll
+        : scrollState.triggered.up === totalToScroll;
+}
+/**
+ * @param {?} scrollState
+ * @param {?} scrolledUntilNow
+ * @param {?} totalToScroll
+ * @return {?}
+ */
+function updateScrollState(scrollState, scrolledUntilNow, totalToScroll) {
+    updateScrollPosition(scrolledUntilNow, scrollState);
+    updateTotalToScroll(totalToScroll, scrollState);
+    // const isSameTotal = isSameTotalToScroll(scrollState);
+    // if (!isSameTotal) {
+    //   updateTriggeredFlag(scrollState, false, isScrollingDown);
+    // }
+}
+/**
+ * @param {?} config
+ * @return {?}
+ */
+function createScroller(config) {
+    var scrollContainer = config.scrollContainer, scrollWindow = config.scrollWindow, element = config.element, fromRoot = config.fromRoot;
+    var /** @type {?} */ resolver = createResolver({
+        axis: new AxisResolver(!config.horizontal),
+        windowElement: resolveContainerElement(scrollContainer, scrollWindow, element, fromRoot)
+    });
+    var startWithTotal = calculatePoints(element, resolver).totalToScroll;
+    var /** @type {?} */ scrollState = {
+        lastScrollPosition: 0,
+        lastTotalToScroll: 0,
+        totalToScroll: startWithTotal,
+        triggered: {
+            down: 0,
+            up: 0
+        }
+    };
+    var /** @type {?} */ options = {
+        container: resolver.container,
+        throttle: config.throttle
+    };
+    var /** @type {?} */ distance = {
+        up: config.upDistance,
+        down: config.downDistance
+    };
+    return attachScrollEvent(options)
+        .mergeMap(function (ev) { return of$2(calculatePoints(element, resolver)); })
+        .map(function (positionStats) { return toInfiniteScrollParams(scrollState.lastScrollPosition, positionStats, distance); })
+        .do(function (_a) {
+        var stats = _a.stats;
+        return updateScrollState(scrollState, stats.scrolled, stats.totalToScroll);
+    })
+        .filter(function (_a) {
+        var fire = _a.fire, scrollDown = _a.scrollDown, totalToScroll = _a.stats.totalToScroll;
+        return shouldTriggerEvents(fire, config.alwaysCallback, isTriggeredScroll(totalToScroll, scrollState, scrollDown));
+    })
+        .do(function (_a) {
+        var scrollDown = _a.scrollDown, totalToScroll = _a.stats.totalToScroll;
+        updateTriggeredFlag(totalToScroll, scrollState, true, scrollDown);
+    })
+        .map(toInfiniteScrollAction);
+}
+/**
+ * @param {?} options
+ * @return {?}
+ */
+function attachScrollEvent(options) {
+    var /** @type {?} */ obs = Observable$1.fromEvent(options.container, 'scroll');
+    // For an unknown reason calling `sampleTime()` causes trouble for many users, even with `options.throttle = 0`.
+    // Let's avoid calling the function unless needed.
+    // See https://github.com/orizens/ngx-infinite-scroll/issues/198
+    if (options.throttle) {
+        obs = obs.sampleTime(options.throttle);
+    }
+    return obs;
+}
+/**
+ * @param {?} lastScrollPosition
+ * @param {?} stats
+ * @param {?} distance
+ * @return {?}
+ */
+function toInfiniteScrollParams(lastScrollPosition, stats, distance) {
+    var _a = getScrollStats(lastScrollPosition, stats, distance), scrollDown = _a.scrollDown, fire = _a.fire;
+    return {
+        scrollDown: scrollDown,
+        fire: fire,
+        stats: stats
+    };
+}
+var InfiniteScrollActions = {
+    DOWN: '[NGX_ISE] DOWN',
+    UP: '[NGX_ISE] UP'
+};
+/**
+ * @param {?} response
+ * @return {?}
+ */
+function toInfiniteScrollAction(response) {
+    var scrollDown = response.scrollDown, currentScrollPosition = response.stats.scrolled;
+    return {
+        type: scrollDown ? InfiniteScrollActions.DOWN : InfiniteScrollActions.UP,
+        payload: {
+            currentScrollPosition: currentScrollPosition
+        }
+    };
+}
+var InfiniteScrollDirective = (function () {
+    /**
+     * @param {?} element
+     * @param {?} zone
+     */
+    function InfiniteScrollDirective(element, zone) {
+        this.element = element;
+        this.zone = zone;
+        this.scrolled = new EventEmitter();
+        this.scrolledUp = new EventEmitter();
+        this.infiniteScrollDistance = 2;
+        this.infiniteScrollUpDistance = 1.5;
+        this.infiniteScrollThrottle = 150;
+        this.infiniteScrollDisabled = false;
+        this.infiniteScrollContainer = null;
+        this.scrollWindow = true;
+        this.immediateCheck = false;
+        this.horizontal = false;
+        this.alwaysCallback = false;
+        this.fromRoot = false;
+    }
+    /**
+     * @return {?}
+     */
+    InfiniteScrollDirective.prototype.ngAfterViewInit = function () {
+        if (!this.infiniteScrollDisabled) {
+            this.setup();
+        }
+    };
+    /**
+     * @param {?} __0
+     * @return {?}
+     */
+    InfiniteScrollDirective.prototype.ngOnChanges = function (_a) {
+        var infiniteScrollContainer = _a.infiniteScrollContainer, infiniteScrollDisabled = _a.infiniteScrollDisabled, infiniteScrollDistance = _a.infiniteScrollDistance;
+        var /** @type {?} */ containerChanged = inputPropChanged(infiniteScrollContainer);
+        var /** @type {?} */ disabledChanged = inputPropChanged(infiniteScrollDisabled);
+        var /** @type {?} */ distanceChanged = inputPropChanged(infiniteScrollDistance);
+        var /** @type {?} */ shouldSetup = (!disabledChanged && !this.infiniteScrollDisabled) ||
+            (disabledChanged && !infiniteScrollDisabled.currentValue) || distanceChanged;
+        if (containerChanged || disabledChanged || distanceChanged) {
+            this.destroyScroller();
+            if (shouldSetup) {
+                this.setup();
+            }
+        }
+    };
+    /**
+     * @return {?}
+     */
+    InfiniteScrollDirective.prototype.setup = function () {
+        var _this = this;
+        if (hasWindowDefined()) {
+            this.zone.runOutsideAngular(function () {
+                _this.disposeScroller = createScroller({
+                    fromRoot: _this.fromRoot,
+                    alwaysCallback: _this.alwaysCallback,
+                    disable: _this.infiniteScrollDisabled,
+                    downDistance: _this.infiniteScrollDistance,
+                    element: _this.element,
+                    horizontal: _this.horizontal,
+                    scrollContainer: _this.infiniteScrollContainer,
+                    scrollWindow: _this.scrollWindow,
+                    throttle: _this.infiniteScrollThrottle,
+                    upDistance: _this.infiniteScrollUpDistance
+                }).subscribe(function (payload) { return _this.zone.run(function () { return _this.handleOnScroll(payload); }); });
+            });
+        }
+    };
+    /**
+     * @param {?} __0
+     * @return {?}
+     */
+    InfiniteScrollDirective.prototype.handleOnScroll = function (_a) {
+        var type = _a.type, payload = _a.payload;
+        switch (type) {
+            case InfiniteScrollActions.DOWN:
+                return this.scrolled.emit(payload);
+            case InfiniteScrollActions.UP:
+                return this.scrolledUp.emit(payload);
+            default:
+                return;
+        }
+    };
+    /**
+     * @return {?}
+     */
+    InfiniteScrollDirective.prototype.ngOnDestroy = function () {
+        this.destroyScroller();
+    };
+    /**
+     * @return {?}
+     */
+    InfiniteScrollDirective.prototype.destroyScroller = function () {
+        if (this.disposeScroller) {
+            this.disposeScroller.unsubscribe();
+        }
+    };
+    return InfiniteScrollDirective;
+}());
+InfiniteScrollDirective.decorators = [
+    { type: Directive, args: [{
+                selector: '[infiniteScroll], [infinite-scroll], [data-infinite-scroll]'
+            },] },
+];
+/**
+ * @nocollapse
+ */
+InfiniteScrollDirective.ctorParameters = function () {
+    return [
+        { type: ElementRef, },
+        { type: NgZone, },
+    ];
+};
+InfiniteScrollDirective.propDecorators = {
+    'scrolled': [{ type: Output },],
+    'scrolledUp': [{ type: Output },],
+    'infiniteScrollDistance': [{ type: Input },],
+    'infiniteScrollUpDistance': [{ type: Input },],
+    'infiniteScrollThrottle': [{ type: Input },],
+    'infiniteScrollDisabled': [{ type: Input },],
+    'infiniteScrollContainer': [{ type: Input },],
+    'scrollWindow': [{ type: Input },],
+    'immediateCheck': [{ type: Input },],
+    'horizontal': [{ type: Input },],
+    'alwaysCallback': [{ type: Input },],
+    'fromRoot': [{ type: Input },],
+};
+var InfiniteScrollModule = (function () {
+    function InfiniteScrollModule() {
+    }
+    return InfiniteScrollModule;
+}());
+InfiniteScrollModule.decorators = [
+    { type: NgModule, args: [{
+                declarations: [InfiniteScrollDirective],
+                exports: [InfiniteScrollDirective],
+                imports: [],
+                providers: []
+            },] },
+];
+/**
+ * @nocollapse
+ */
+InfiniteScrollModule.ctorParameters = function () { return []; };
 /*
  The MIT License (MIT)
 
@@ -2131,7 +2738,7 @@ var ModalGalleryModule = (function () {
 }());
 ModalGalleryModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule],
+                imports: [CommonModule, InfiniteScrollModule],
                 declarations: [AngularModalGalleryComponent, UpperButtonsComponent, GalleryComponent, DIRECTIVES],
                 exports: [AngularModalGalleryComponent]
             },] },

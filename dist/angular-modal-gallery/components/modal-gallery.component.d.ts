@@ -178,7 +178,7 @@ export declare class AngularModalGalleryComponent implements OnInit, OnDestroy, 
     /**
      * Function to call at bottom of thumbnails cointainer
      */
-    getImagesFromServer: Function;
+    scrolled: EventEmitter<any>;
     /**
      * Private SWIPE_ACTION to define all swipe actions used by hammerjs.
      */
@@ -345,4 +345,5 @@ export declare class AngularModalGalleryComponent implements OnInit, OnDestroy, 
      *  either the first or the last one.
      */
     private isPreventSliding(boundaryIndex);
+    onScrollDown(): void;
 }

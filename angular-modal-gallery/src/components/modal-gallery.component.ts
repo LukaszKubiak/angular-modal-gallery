@@ -247,7 +247,7 @@ export class AngularModalGalleryComponent implements OnInit, OnDestroy, OnChange
   /**
    * Function to call at bottom of thumbnails cointainer
    */
-  @Input() getImagesFromServer: Function;
+  @Output() scrolled: EventEmitter<any> = new EventEmitter();
 
 
   /**
@@ -672,5 +672,9 @@ export class AngularModalGalleryComponent implements OnInit, OnDestroy, OnChange
   private isPreventSliding(boundaryIndex: number) {
     return !!this.slideConfig && this.slideConfig.infinite === false &&
       this.currentImageIndex === boundaryIndex;
+  }
+
+  onScrollDown(){
+    this.scrolled.emit(null);
   }
 }

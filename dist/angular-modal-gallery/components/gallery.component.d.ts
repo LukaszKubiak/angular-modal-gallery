@@ -17,7 +17,7 @@ export declare class GalleryComponent {
     /**
      * Function to call at bottom of thumbnails cointainer
      */
-    getImagesFromServer: Function;
+    scrolled: EventEmitter<any>;
     show: EventEmitter<number>;
     showModalGallery(index: number): void;
     /**
@@ -28,4 +28,5 @@ export declare class GalleryComponent {
      * @param index Number that represents the image index.
      */
     getAltDescriptionByIndex(index: number): string;
+    onScrollDown(): void;
 }

@@ -31,6 +31,7 @@ import { UpperButtonsComponent } from './components/upper-buttons.component';
 import { KeyboardService, } from './services/keyboard.service';
 import { GalleryComponent } from './components/gallery.component';
 import { KeyboardServiceConfig } from './interfaces/keyboard-service-config.interface';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 export const KEYBOARD_CONFIGURATION = new InjectionToken<KeyboardServiceConfig>('KEYBOARD_CONFIGURATION');
 
@@ -38,7 +39,7 @@ export const KEYBOARD_CONFIGURATION = new InjectionToken<KeyboardServiceConfig>(
  * Module with `forRoot` method to import it in the root module of your application.
  */
 @NgModule({
-  imports: [ CommonModule ],
+  imports: [ CommonModule, InfiniteScrollModule ],
   declarations: [ AngularModalGalleryComponent, UpperButtonsComponent, GalleryComponent, DIRECTIVES ],
   exports: [ AngularModalGalleryComponent ]
 })
