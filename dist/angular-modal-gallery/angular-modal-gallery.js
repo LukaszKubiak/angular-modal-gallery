@@ -1894,7 +1894,8 @@ AngularModalGalleryComponent.decorators = [
       [showThumbCaption]="showThumbCaption"
       (show)="onShowModalGallery($event)"
       [isServerSide]="isServerSide"
-      (scrolled)="onScrollDown()"></gallery>
+      (scrolled)="onScrollDown()"
+      [thumbLimit]="thumbLimit"></gallery>
 
     <div class="ng-overlay" *ngIf="opened">
 
@@ -2453,6 +2454,13 @@ class GalleryComponent {
          */
         this.thumbLimit = null;
         this.show = new EventEmitter();
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        if (!this.thumbLimit)
+            this.thumbLimit = this.images.length;
     }
     /**
      * @param {?} index

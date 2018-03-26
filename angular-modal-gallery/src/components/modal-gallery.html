@@ -4,7 +4,8 @@
   [showThumbCaption]="showThumbCaption"
   (show)="onShowModalGallery($event)"
   [isServerSide]="isServerSide"
-  (scrolled)="onScrollDown()"></gallery>
+  (scrolled)="onScrollDown()"
+  [thumbLimit]="thumbLimit"></gallery>
 
 <div class="ng-overlay" *ngIf="opened">
 

@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-import { Input, Output, EventEmitter, Component } from '@angular/core';
+import {Input, Output, EventEmitter, Component, OnInit} from '@angular/core';
 import { Image } from './modal-gallery.component';
 
 /**
@@ -36,7 +36,11 @@ import { Image } from './modal-gallery.component';
   styleUrls: ['gallery.scss'],
   templateUrl: 'gallery.html'
 })
-export class GalleryComponent {
+export class GalleryComponent implements OnInit{
+  ngOnInit(): void {
+    if (!this.thumbLimit)
+      this.thumbLimit = this.images.length;
+  }
 
   @Input() images: Image[];
   @Input() showThumbCaption: boolean;

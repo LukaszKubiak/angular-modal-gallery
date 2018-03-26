@@ -1,4 +1,4 @@
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, OnInit } from '@angular/core';
 import { Image } from './modal-gallery.component';
 /**
  * Component with the gallery of thumbs.
@@ -6,7 +6,8 @@ import { Image } from './modal-gallery.component';
  * the gallery (feature used by imagePointer).
  * Also it emits click events as outputs.
  */
-export declare class GalleryComponent {
+export declare class GalleryComponent implements OnInit {
+    ngOnInit(): void;
     images: Image[];
     showThumbCaption: boolean;
     showGallery: boolean;
