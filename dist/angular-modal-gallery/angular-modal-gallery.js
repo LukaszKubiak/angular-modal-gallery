@@ -1287,6 +1287,10 @@ class AngularModalGalleryComponent {
          */
         this.isServerSide = false;
         /**
+         * Thumbnails limit
+         */
+        this.thumbLimit = null;
+        /**
          * Function to call at bottom of thumbnails cointainer
          */
         this.scrolled = new EventEmitter();
@@ -1948,6 +1952,7 @@ AngularModalGalleryComponent.propDecorators = {
     'lastImage': [{ type: Output },],
     'hasData': [{ type: Output },],
     'isServerSide': [{ type: Input },],
+    'thumbLimit': [{ type: Input },],
     'scrolled': [{ type: Output },],
     'onKeyDown': [{ type: HostListener, args: ['window:keydown', ['$event'],] },],
 };
@@ -2443,6 +2448,10 @@ class GalleryComponent {
          * Function to call at bottom of thumbnails cointainer
          */
         this.scrolled = new EventEmitter();
+        /**
+         * Thumbnails limit
+         */
+        this.thumbLimit = null;
         this.show = new EventEmitter();
     }
     /**
@@ -2523,11 +2532,32 @@ GalleryComponent.decorators = [
       margin-right: 10px;
       margin-bottom: 1px;
       float: left; }
+
+    .more {
+      z-index: 1;
+      position: absolute;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: rgba(103, 103, 103, 0.4);
+      font-size: 10px;
+      color: white;
+      text-align: center;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      font-weight: bold; }
   `],
                 template: `
     <div class="ng-gallery" *ngIf="showGallery">
       <div class="img" *ngFor="let i of images; let index = index">
-        <ng-container *ngIf="i && i.img && !isServerSide">
+        <ng-container *ngIf="i && i.img && !isServerSide && index <= thumbLimit">
+          <div *ngIf="index == thumbLimit-1" class="more" [ngStyle]="{'width': i.thumbWidth, 'height':i.thumbHeight}" (click)="showModalGallery(index)">więcej</div>
           <img *ngIf="i.thumb" src="{{ i.thumb }}" class="ng-thumb" (click)="showModalGallery(index)"
                alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}" crossorigin="use-credentials"/>
           <img *ngIf="!i.thumb" src="{{ i.img }}" class="ng-thumb" (click)="showModalGallery(index)"
@@ -2563,6 +2593,7 @@ GalleryComponent.propDecorators = {
     'showGallery': [{ type: Input },],
     'isServerSide': [{ type: Input },],
     'scrolled': [{ type: Output },],
+    'thumbLimit': [{ type: Input },],
     'show': [{ type: Output },],
 };
 

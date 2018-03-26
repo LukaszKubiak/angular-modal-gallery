@@ -18,6 +18,10 @@ export declare class GalleryComponent {
      * Function to call at bottom of thumbnails cointainer
      */
     scrolled: EventEmitter<any>;
+    /**
+     * Thumbnails limit
+     */
+    thumbLimit: number;
     show: EventEmitter<number>;
     showModalGallery(index: number): void;
     /**

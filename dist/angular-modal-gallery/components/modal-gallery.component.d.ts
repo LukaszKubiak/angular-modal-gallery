@@ -176,6 +176,10 @@ export declare class AngularModalGalleryComponent implements OnInit, OnDestroy, 
      */
     isServerSide: boolean;
     /**
+     * Thumbnails limit
+     */
+    thumbLimit: number;
+    /**
      * Function to call at bottom of thumbnails cointainer
      */
     scrolled: EventEmitter<any>;

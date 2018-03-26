@@ -47,3 +47,18 @@ img {
   margin-bottom: 1px;
   float:left;
 }
+
+.more{
+  z-index: 1;
+  position: absolute;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: rgba(103, 103, 103, 0.4);
+  font-size: 10px;
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}

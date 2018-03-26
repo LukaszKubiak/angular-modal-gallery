@@ -49,6 +49,10 @@ export class GalleryComponent {
    * Function to call at bottom of thumbnails cointainer
    */
   @Output() scrolled: EventEmitter<any> = new EventEmitter();
+  /**
+   * Thumbnails limit
+   */
+  @Input() thumbLimit: number = null;
 
   @Output() show: EventEmitter<number> = new EventEmitter<number>();
 
