@@ -430,7 +430,7 @@ export class AngularModalGalleryComponent implements OnInit, OnDestroy, OnChange
       return;
     }
 
-    if (this.isServerSide && this.currentImageIndex == this.images.length-1)
+    if (this.isServerSide && this.currentImageIndex == this.images.length-2)
     {
       this.scrolled.emit(null);
     }

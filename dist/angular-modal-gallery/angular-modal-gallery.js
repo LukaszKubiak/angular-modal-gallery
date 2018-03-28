@@ -1445,7 +1445,7 @@ class AngularModalGalleryComponent {
         if (this.isPreventSliding(this.images.length - 1)) {
             return;
         }
-        if (this.isServerSide && this.currentImageIndex == this.images.length - 1) {
+        if (this.isServerSide && this.currentImageIndex == this.images.length - 2) {
             this.scrolled.emit(null);
         }
         this.loading = true;
