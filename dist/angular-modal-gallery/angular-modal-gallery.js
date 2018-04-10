@@ -2580,7 +2580,8 @@ GalleryComponent.decorators = [
           <div
             data-infinite-scroll
             debounce
-            (scrolled)="onScrollDown()">
+            (scrolled)="onScrollDown()"
+            [infiniteScrollDistance]="0.1">
             <img *ngIf="i.thumb" src="{{ i.thumb }}" class="ng-thumb" (click)="showModalGallery(index)"
                  alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}" crossorigin="use-credentials"/>
             <img *ngIf="!i.thumb" src="{{ i.img }}" class="ng-thumb" (click)="showModalGallery(index)"
