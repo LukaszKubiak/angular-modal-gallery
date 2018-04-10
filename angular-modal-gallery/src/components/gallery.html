@@ -18,8 +18,7 @@
        class="infinite-scroll"
        data-infinite-scroll
        debounce
-       (scrolled)="onScrollDown()"
-       [infiniteScrollDistance]="0.1">
+       (scrolled)="onScrollDown()">
     <div class="img" *ngFor="let i of images; let index = index">
       <ng-container *ngIf="i && i.img && isServerSide">
         <img *ngIf="i.thumb" src="{{ i.thumb }}" class="ng-thumb" (click)="showModalGallery(index)"
