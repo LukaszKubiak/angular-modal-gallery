@@ -2571,7 +2571,8 @@ GalleryComponent.decorators = [
     <div class="ng-gallery" *ngIf="showGallery"
          data-infinite-scroll
          debounce
-         (scrolled)="onScrollDown()">
+         (scrolled)="onScrollDown()"
+         [infiniteScrollDistance]="0.5">
       <div *ngIf="!isServerSide">
         <div class="img" *ngFor="let i of images; let index = index">
           <ng-container *ngIf="i && i.img && index < thumbLimit">
@@ -2598,7 +2599,6 @@ GalleryComponent.decorators = [
                  [innerHTML]="i.caption"></div>
           </ng-container>
         </div>
-
       </div>
     </div>
   `
