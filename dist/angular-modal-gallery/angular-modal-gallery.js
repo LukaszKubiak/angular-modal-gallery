@@ -2568,7 +2568,10 @@ GalleryComponent.decorators = [
       height: 100%; }
   `],
                 template: `
-    <div class="ng-gallery" *ngIf="showGallery">
+    <div class="ng-gallery" *ngIf="showGallery"
+         data-infinite-scroll
+         debounce
+         (scrolled)="onScrollDown()">
       <div *ngIf="!isServerSide">
         <div class="img" *ngFor="let i of images; let index = index">
           <ng-container *ngIf="i && i.img && index < thumbLimit">
@@ -2585,21 +2588,17 @@ GalleryComponent.decorators = [
         </div>
       </div>
       <div *ngIf="isServerSide">
-        <div
-          data-infinite-scroll
-          debounce
-          (scrolled)="onScrollDown()">
-          <div class="img" *ngFor="let i of images; let index = index">
-            <ng-container *ngIf="i && i.img && isServerSide">
-              <img *ngIf="i.thumb" src="{{ i.thumb }}" class="ng-thumb" (click)="showModalGallery(index)"
-                   alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}" crossorigin="use-credentials"/>
-              <img *ngIf="!i.thumb" src="{{ i.img }}" class="ng-thumb" (click)="showModalGallery(index)"
-                   alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}"/>
-              <div *ngIf="showThumbCaption" class="small" [ngStyle]="{'width': i.thumbWidth, 'height': '100px', 'float': 'left', 'clear': 'both'}"
-                   [innerHTML]="i.caption"></div>
-            </ng-container>
-          </div>
+        <div class="img" *ngFor="let i of images; let index = index">
+          <ng-container *ngIf="i && i.img && isServerSide">
+            <img *ngIf="i.thumb" src="{{ i.thumb }}" class="ng-thumb" (click)="showModalGallery(index)"
+                 alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}" crossorigin="use-credentials"/>
+            <img *ngIf="!i.thumb" src="{{ i.img }}" class="ng-thumb" (click)="showModalGallery(index)"
+                 alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}"/>
+            <div *ngIf="showThumbCaption" class="small" [ngStyle]="{'width': i.thumbWidth, 'height': '100px', 'float': 'left', 'clear': 'both'}"
+                 [innerHTML]="i.caption"></div>
+          </ng-container>
         </div>
+
       </div>
     </div>
   `
