@@ -2563,6 +2563,9 @@ GalleryComponent.decorators = [
           -ms-flex-pack: center;
               justify-content: center;
       font-weight: bold; }
+
+    .infinite-scroll {
+      height: 100%; }
   `],
                 template: `
     <div class="ng-gallery" *ngIf="showGallery">
@@ -2577,7 +2580,7 @@ GalleryComponent.decorators = [
                [innerHTML]="i.caption"></div>
         </ng-container>
         <ng-container *ngIf="i && i.img && isServerSide">
-          <div
+          <div class="infinite-scroll"
             data-infinite-scroll
             debounce
             (scrolled)="onScrollDown()"

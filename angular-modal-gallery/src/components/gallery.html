@@ -10,7 +10,7 @@
            [innerHTML]="i.caption"></div>
     </ng-container>
     <ng-container *ngIf="i && i.img && isServerSide">
-      <div
+      <div class="infinite-scroll"
         data-infinite-scroll
         debounce
         (scrolled)="onScrollDown()"
