@@ -1,21 +1,26 @@
 <div class="ng-gallery" *ngIf="showGallery">
-  <div class="img" *ngFor="let i of images; let index = index">
-    <ng-container *ngIf="i && i.img && !isServerSide && index < thumbLimit">
-      <div *ngIf="index == thumbLimit-1 && thumbLimit != images.length" class="more" [ngStyle]="{'width': i.thumbWidth, 'height':i.thumbHeight}"
-           (click)="showModalGallery(index)">więcej
-      </div>
-      <img *ngIf="i.thumb" src="{{ i.thumb }}" class="ng-thumb" (click)="showModalGallery(index)"
-           alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}" crossorigin="use-credentials"/>
-      <img *ngIf="!i.thumb" src="{{ i.img }}" class="ng-thumb" (click)="showModalGallery(index)"
-           alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}"/>
-      <div *ngIf="showThumbCaption" class="small" [ngStyle]="{'width': i.thumbWidth, 'height': '100px', 'float': 'left', 'clear': 'both'}"
-           [innerHTML]="i.caption"></div>
-    </ng-container>
-    <div class="infinite-scroll"
-         data-infinite-scroll
-         debounce
-         (scrolled)="onScrollDown()"
-         [infiniteScrollDistance]="0.1">
+  <div *ngIf="!isServerSide">
+    <div class="img" *ngFor="let i of images; let index = index">
+      <ng-container *ngIf="i && i.img && index < thumbLimit">
+        <div *ngIf="index == thumbLimit-1 && thumbLimit != images.length" class="more" [ngStyle]="{'width': i.thumbWidth, 'height':i.thumbHeight}"
+             (click)="showModalGallery(index)">więcej
+        </div>
+        <img *ngIf="i.thumb" src="{{ i.thumb }}" class="ng-thumb" (click)="showModalGallery(index)"
+             alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}" crossorigin="use-credentials"/>
+        <img *ngIf="!i.thumb" src="{{ i.img }}" class="ng-thumb" (click)="showModalGallery(index)"
+             alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}"/>
+        <div *ngIf="showThumbCaption" class="small" [ngStyle]="{'width': i.thumbWidth, 'height': '100px', 'float': 'left', 'clear': 'both'}"
+             [innerHTML]="i.caption"></div>
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="isServerSide"
+       class="infinite-scroll"
+       data-infinite-scroll
+       debounce
+       (scrolled)="onScrollDown()"
+       [infiniteScrollDistance]="0.1">
+    <div class="img" *ngFor="let i of images; let index = index">
       <ng-container *ngIf="i && i.img && isServerSide">
         <img *ngIf="i.thumb" src="{{ i.thumb }}" class="ng-thumb" (click)="showModalGallery(index)"
              alt="{{getAltDescriptionByIndex(index)}}" [ngStyle]="{'width': i.thumbWidth, 'height': i.thumbHeight}" crossorigin="use-credentials"/>
