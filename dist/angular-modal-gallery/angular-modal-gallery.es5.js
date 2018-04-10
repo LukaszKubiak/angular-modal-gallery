@@ -1318,10 +1318,11 @@ var AngularModalGalleryComponent = (function () {
         if (this.isPreventSliding(this.images.length - 1)) {
             return;
         }
-        if (this.isServerSide && this.currentImageIndex == this.images.length - 2) {
-            this.scrolled.emit(null);
-        }
         this.loading = true;
+        if (this.isServerSide && this.currentImageIndex == this.images.length - 5) {
+            this.scrolled.emit(null);
+            this.loading = false;
+        }
         this.currentImageIndex = this.getNextIndex(action, this.currentImageIndex);
         this.showModalGallery(this.currentImageIndex);
     };
